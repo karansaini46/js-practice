@@ -8,11 +8,11 @@ Hint - use Date class exposed in JS
 There is no automated test for this one, this is more for you to understand time goes up as computation goes up
 */
 
-/// for 2 ////
+/// for 3////
 
 function calculateTime( n) {
     let a = 0;
-    for (let i = 0; i<100000; i++){
+    for (let i = 0; i<1000000000; i++){
         a = a + i
     }
     result = a; 
@@ -21,10 +21,10 @@ function calculateTime( n) {
 const beforedate = new Date();
 const beforetimeinMS = beforedate.getTime()
 
-calculateTime(100000) 
+calculateTime(1000000000) 
 
 const afterdate = new Date();
 const aftertimeinMS = afterdate.getTime();
 console.log(aftertimeinMS - beforetimeinMS)
 
-//// answer 4 ///
+//// answer 1373 ///
