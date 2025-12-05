@@ -1,4 +1,5 @@
-const value = "hi my name is karan"
-const words = value.split(" ")
+const initialarry = [1,2,3];
+const secondarray = [4,5,6];
 
-console.log(words);
+const finalarray = initialarry.concat(secondarray);
+console.log(finalarray);
