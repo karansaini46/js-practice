@@ -1,5 +1,4 @@
-const initialarry = [1,2,3];
-const secondarray = [4,5,6];
+const currentdate = new Date();
 
-const finalarray = initialarry.concat(secondarray);
-console.log(finalarray);
+console.log(currentdate.getDate());
+console.log(currentdate.getFullYear());
