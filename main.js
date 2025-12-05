@@ -1,6 +1,4 @@
-function findIndexOf(str, target) {
-  console.log("Original String:", str);
-  console.log("Index:", str.indexOf(target));
-}
+const value = "hi my name is karan"
+const words = value.split(" ")
 
-findIndexOf("1 2 3", "3");
+console.log(words);
