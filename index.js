@@ -1,80 +1,48 @@
-const express = require("express")
+/**
+  You need to create an express HTTP server in Node.js which will handle the logic of a file server.
+  - Use built in Node.js `fs` module
+  The expected API endpoints are defined below,
+  1. GET /files - Returns a list of files present in `./files/` directory
+    Response: 200 OK with an array of file names in JSON format.
+    Example: GET http://localhost:3000/files
+  2. GET /file/:filename - Returns content of given file by name
+     Description: Use the filename from the request path parameter to read the file from `./files/` directory
+     Response: 200 OK with the file content as the response body if found, or 404 Not Found if not found. Should return `File not found` as text if file is not found
+     Example: GET http://localhost:3000/file/example.txt
+    - For any other route not defined in the server return 404
+    Testing the server - run `npm run test-fileServer` command in terminal
+ */
+const express = require("express");
+const fs = require("fs");
 const app = express();
-
-const users = [{
-  name: "raaj",
-  bottles: [{
-    fullbottle: false
-  }]
-}];
 
 app.use(express.json());
 
-app.get("/", function (req, res) {
-  const raajbottles = users[0].bottles;
-  const numberofbottles = raajbottles.length;
-  let numberoffullbottles = 0;
-  for (let i = 0; i < raajbottles.length; i++) {
-    if (raajbottles[i].fullbottle) {
-      numberoffullbottles = numberoffullbottles + 1;
+app.get("/files", function (req, res) {
+  fs.readdir("./files/", function (err, files) {
+    if (err) {
+      res.status(500).json({
+        error: "Cannot read directory"
+      });
+    } else {
+      res.json(files);
     }
-  }
-  const numberofhalfbottles = numberofbottles - numberoffullbottles;
-  res.json({
-    numberofbottles,
-    numberoffullbottles,
-    numberofhalfbottles
-  })
-})
+  });
+});
 
-app.post("/", function (req, res) {
-
-  const isfull = req.body.isfull;
-  users[0].bottles.push({
-    fullbottle: isfull
-  })
-  res.json({
-    msg: "done"
-  })
-})
-app.put("/", function (req, res) {
-  for (let i = 0; i < users[0].bottles.length; i++) {
-    users[0].bottles[i].fullbottle = true;
-  }
-  res.json({});
-
-})
-
-app.delete("/", function (req, res) {
-  if (isthereatleastonehalfbottle()) {
-    const newbottles = [];
-    for (let i = 0; i < users[0].bottles.length; i++) {
-      if (users[0].bottles[i].fullbottle) {
-        newbottles.push({
-          fullbottle: true
-        })
-      }
+app.get("/file/:filename", function (req, res) {
+  const filename = req.params.filename;
+  fs.readFile("./files/" + filename, "utf8", function (err, data) {
+    if (err) {
+      res.status(404).send("File not found");
+    } else {
+      res.send(data);
     }
-    users[0].bottles = newbottles;
-    res.json({
-      msr: "done"
-    })
-  } else {
-    res.status(411).json({
-      msg: "you have no half bottles"
-    })
-  }
+  });
+});
 
-})
+app.use(function (req, res) {
+  res.status(404).send("Route not found");
+});
 
-
-function isthereatleastonehalfbottle() {
-  let atleastonrhalfbottle = false
-  for (let i = 0; i < users[0].bottles.length; i++) {
-    if (!users[0].bottles[i].fullbottle) {
-      atleastonrhalfbottle = true;
-    }
-  }
-  return atleastonrhalfbottle
-}
-app.listen(3000)
+app.listen(3000);
