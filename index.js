@@ -1,24 +1,20 @@
-const express = require("express");
-const zod = require("zod");
-const app = express();
+const zod = require("zos");
 
-const schema = zod.array(zod.number());
+function validateinput(obj){
+  const schema = zod.object({
+    email: zod.string().email(),
+    password: zod.string()minLength(8)
+  })
+  const response = schema.safeparse(obj);
+  console.log(response);
+}
 
-app.use(express.json());
-
-app.post("/health-checkup",function(req,res){
-  const kidneys = req.body.kidneys;
-  const response = schema.safeparseO(kidneys)
+application.post("/login", function(req,res){
+  const response = validateinput(req.body)
   if (!response.success){
-    res.status(411).json ({
-      msg : "input is invalid"
-  
-    }) 
-  } else {
-    res.send ({
-      response
+    res.json({
+      msg: "your inputs are invalid"
     })
+    return;
   }
-});
-
-app.listen(300)
+})
