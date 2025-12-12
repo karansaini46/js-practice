@@ -1,11 +1,24 @@
-const input =[2,3,4,5];
-const output = [4,5,6,7];
+const express = require("express");
+const zod = require("zod");
+const app = express();
 
-const ans = input.map(function (i){
-  return i*2;
-})
-const ans2 = output.map(function (i){
-  return i*2;
-})
-console.log(ans);
-console.log(ans2);
+const schema = zod.array(zod.number());
+
+app.use(express.json());
+
+app.post("/health-checkup",function(req,res){
+  const kidneys = req.body.kidneys;
+  const response = schema.safeparseO(kidneys)
+  if (!response.success){
+    res.status(411).json ({
+      msg : "input is invalid"
+  
+    }) 
+  } else {
+    res.send ({
+      response
+    })
+  }
+});
+
+app.listen(300)
