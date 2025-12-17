@@ -1,20 +1,13 @@
-const zod = require("zos");
+const mongoose = require("mongoose");
 
-function validateinput(obj){
-  const schema = zod.object({
-    email: zod.string().email(),
-    password: zod.string()minLength(8)
-  })
-  const response = schema.safeparse(obj);
-  console.log(response);
-}
+mongoose.connect("mongodb+srv:/0.18s8vt9.mongodb.net/userappnew")
 
-application.post("/login", function(req,res){
-  const response = validateinput(req.body)
-  if (!response.success){
-    res.json({
-      msg: "your inputs are invalid"
-    })
-    return;
-  }
-})
+const user = mongoose.model('users',{ name: string ,email: string,  password: string});
+
+const user = new user({
+  name: 'karan',
+  email: 'fdsfdfsg@gmail.com',
+  password: '123456'
+});
+
+user.Save();
